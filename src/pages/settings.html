@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC|Indie+Flower');
+        .main {
+            width: 95%;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .settings {
+            width: 100%;
+            border: solid;
+            text-align: center;
+            border-radius: 10px 10px 10px 10px;
+            background: #FFF;
+            font-size: 36px;
+            font-family: "Indie Flower";
+            overflow: overlay;
+            transition: 0.2s;
+        }
+        
+        .settings:hover {
+            box-shadow: 12px 12px 12px 0px rgba(50, 50, 50, 0.75);
+        }
+        
+        .container {
+            width: 95%;
+            margin-left: 8px;
+            margin-bottom: 20px;
+            font-size: 26px;
+            height: 26px;
+            text-align: left;
+            display: block;
+        }
+        
+        .separator {
+            background-color: #000000;
+            height: 1px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        
+        .settingname {
+            float: left;
+            margin-right: 2vw;
+        }
+        
+        #btndiv {
+            display: table;
+        }
+        
+        .botbtn {
+            margin-top: 2vh;
+            float: right;
+            margin-right: 1.5%;
+        }
+        
+        .topbtn {
+            margin-bottom: 2vh;
+            margin-right: 5px;
+            float: left;
+        }
+        
+        .red {
+            background-color: #ff0000;
+            color: white;
+        }
+        
+        .green {
+            background-color: #1cce0c;
+            color: white;
+        }
+        
+        .button {
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            display: table-row;
+            transition-duration: 0.2s;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            box-shadow: 6px 6px 6px 0px rgba(50, 50, 50, 0.75);
+        }
+        
+        .title {
+            text-align: center;
+            font-family: "Indie Flower";
+            font-size: 48px;
+            font-weight: 700;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <div class="title">Settings</div>
+    <div class="main">
+        <div id="btndiv">
+            <button class="red topbtn button" id="retimebtn" onclick="">Reset Time</button>
+            <button class="red topbtn button" id="resetbtn" onclick="clearsettings">Reset Settings</button>
+        </div>
+        <div class="settings">
+            <div class="container" id="settings">
+            </div>
+        </div>
+        <button id='savebtn' class="green botbtn button" id="resetbtn">Save</button>
+    </div>
+    <script src="settings.js"></script>
+</body>
+
+</html>

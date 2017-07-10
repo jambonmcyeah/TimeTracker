@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Graph</title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <style id="loadingstyle">
+        @keyframes ra {
+            0% {
+                transform: rotate(0deg)
+            }
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+        
+        .loadingicon {
+            height: 50px;
+            width: 50px;
+            margin: 100px auto;
+            margin-bottom: 80px;
+            animation-name: ra;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            background: url('data:image/svg+xml;base64,PHN2ZyBpZD0iaWNvbi1nZWFyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iIzAxMDEwMSIgZD0iTTExNC4yNTEsNzAuNzMxYzIuMjExLDAsNC4yNzEtMS43OTMsNC41NzItMy45ODVjMCwwLDAuNDIyLTMuMDgxLDAuNDIyLTYuNzQ1cy0wLjQyMi02Ljc0NS0wLjQyMi02Ljc0NQ0KCWMtMC4zMDQtMi4xOTMtMi4zNjEtMy45ODYtNC41NzItMy45ODZoLTExLjQzM2MtMi4yMTQsMC00LjUxMi0xLjQxMS01LjEwNi0zLjEzNXMtMS40MTQtNy4yNTUsMC4xNTEtOC44MTlsOC4wOC04LjA4MQ0KCWMxLjU2NC0xLjU2NSwxLjY4Ni00LjIzNiwwLjI2OS01LjkzN2wtOS41MDctOS41MWMtMS43MDEtMS40MTgtNC4zNzEtMS4yOTgtNS45MzgsMC4yNjhsLTguMDgsOC4wODENCgljLTEuNTY0LDEuNTY2LTQuMTczLDIuMTk2LTUuNzkzLDEuNDAyYy0xLjYyLTAuNzk0LTYuMTYzLTQuMTQzLTYuMTYzLTYuMzU2VjUuNzVjMC0yLjIxMy0xLjc5NC00LjI3MS0zLjk4NS00LjU3Mg0KCWMwLDAtMy4wODEtMC40MjQtNi43NDUtMC40MjRzLTYuNzQ1LDAuNDI0LTYuNzQ1LDAuNDI0Yy0yLjE5MywwLjMwMS0zLjk4OCwyLjM1OS0zLjk4OCw0LjU3MnYxMS40MzMNCgljMCwyLjIxMy0xLjQxLDQuNTExLTMuMTM1LDUuMTA2Yy0xLjcyNSwwLjU5NS03LjI1NSwxLjQxNC04LjgyLTAuMTUxbC04LjA4MS04LjA4MWMtMS41NjUtMS41NjUtNC4yMzYtMS42ODYtNS45MzYtMC4yNjkNCglsLTkuNTA5LDkuNTA5Yy0xLjQxOCwxLjcwMS0xLjI5OCw0LjM3MSwwLjI2OCw1LjkzN2w4LjA4LDguMDgxYzEuNTY1LDEuNTY1LDIuMTk3LDQuMTcyLDEuNDAyLDUuNzkyDQoJYy0wLjc5NSwxLjYyLTQuMTQzLDYuMTYzLTYuMzU2LDYuMTYzSDUuNzVjLTIuMjEzLDAtNC4yNzEsMS43OTQtNC41NzMsMy45ODZjMCwwLTAuNDI0LDMuMDgxLTAuNDI0LDYuNzQ0DQoJYzAsMy42NjUsMC40MjQsNi43NDQsMC40MjQsNi43NDRjMC4zMDEsMi4xOTQsMi4zNTksMy45ODcsNC41NzMsMy45ODdoMTEuNDMzYzIuMjEzLDAsNC41MTEsMS40MDksNS4xMDUsMy4xMzUNCgljMC41OTUsMS43MjUsMS40MTQsNy4yNTQtMC4xNTIsOC44MThsLTguMDgsOC4wODFjLTEuNTY1LDEuNTY1LTEuNjg2LDQuMjM2LTAuMjY4LDUuOTM4bDkuNTA4LDkuNTA5DQoJYzEuNzAxLDEuNDE3LDQuMzcsMS4yOTksNS45MzYtMC4yNjlsOC4wODEtOC4wOGMxLjU2NS0xLjU2NCw0LjE3Mi0yLjE5NSw1Ljc5My0xLjQwMWMxLjYyMSwwLjc5NCw2LjE2Miw0LjE0Myw2LjE2Miw2LjM1NXYxMS40MzMNCgljMCwyLjIxMiwxLjc5NCw0LjI3LDMuOTg4LDQuNTdjMCwwLDMuMDgsMC40MjQsNi43NDUsMC40MjRjMy42NjUsMCw2Ljc0NS0wLjQyNCw2Ljc0NS0wLjQyNGMyLjE5My0wLjMwMSwzLjk4NS0yLjM1OCwzLjk4NS00LjU3DQoJdi0xMS40MzNjMC0yLjIxMywxLjQxMS00LjUxMiwzLjEzNi01LjEwNmMxLjcyNi0wLjU5NSw3LjI1Ni0xLjQxMyw4LjgyLDAuMTUxbDguMDgsOC4wODFjMS41NjUsMS41NjMsNC4yMzYsMS42ODYsNS45MzgsMC4yNjgNCglsOS41MDctOS41MDZjMS40MTctMS43MDEsMS4yOTktNC4zNy0wLjI2OS01LjkzOGwtOC4wOC04LjA4Yy0xLjU2NS0xLjU2NC0yLjE5Ny00LjE3Mi0xLjQwMS01Ljc5Mw0KCWMwLjc5NC0xLjYyLDQuMTQzLTYuMTYzLDYuMzU1LTYuMTYzSDExNC4yNTF6IE02MCw4MS42ODdjLTExLjk3NywwLTIxLjY4Ni05LjcwNy0yMS42ODYtMjEuNjg3DQoJYzAtMTEuOTc2LDkuNzA5LTIxLjY4NiwyMS42ODYtMjEuNjg2YzExLjk3NywwLDIxLjY4Nyw5LjcwOSwyMS42ODcsMjEuNjg2QzgxLjY4Nyw3MS45NzcsNzEuOTc3LDgxLjY4Nyw2MCw4MS42ODd6Ii8+DQo8L3N2Zz4=') no-repeat center center / 100%;
+        }
+        
+        #cover0 {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            text-align: center;
+            font-size: 32px;
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC|Indie+Flower');
+        body {
+            background-color: #f1f1f1;
+        }
+        
+        .graph {
+            width: 95%;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .chart {
+            width: 100%;
+            border: solid;
+            text-align: center;
+            border-radius: 10px 10px 10px 10px;
+            box-shadow: 12px 12px 12px 0px rgba(50, 50, 50, 0.75);
+            background: #FFF;
+            font-size: 36px;
+            font-family: "Indie Flower";
+        }
+        
+        .title {
+            font-size: 48px;
+            font-family: "Indie Flower";
+            font-weight: 900;
+        }
+        
+        .label {
+            width: 100%;
+            text-align: left;
+            font-size: 24px;
+            margin-left: 6px;
+            text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+            font-family: "Indie Flower";
+            font-weight: 700;
+        }
+        
+        .container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .barcontainer {
+            width: 95%;
+            height: 30px;
+        }
+        
+        .percentage {
+            color: #FFFFFF;
+            text-align: right;
+            margin-right: 2vw;
+            font-size: 20px;
+            font-family: "Indie Flower";
+            text-shadow: 4px 4px 4px rgba(150, 150, 150, 1);
+        }
+        
+        .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to left, #4754FF 0%, #87AFFF 100%);
+            border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+            box-shadow: 7px 7px 12px 0px rgba(50, 50, 50, 0.75);
+            float: left;
+        }
+        
+        #SizeTest {
+            position: absolute;
+            visibility: hidden;
+            height: auto;
+            width: auto;
+            white-space: nowrap;
+            font-size: 20px;
+            font-family: "Indie Flower";
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cover0">
+        <div class="loadingicon"></div>
+        Loading...
+    </div>
+    <div id="graph1" class="graph">
+        <div class="title">Time Spent</div>
+        <div id="chart1" class="chart"></div>
+    </div>
+    <div id="SizeTest"></div>
+    <script src="graph.js" async="async"></script>
+</body>
+
+</html>
