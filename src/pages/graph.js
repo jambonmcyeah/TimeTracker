@@ -1,5 +1,65 @@
 ﻿/// <reference path="../../references/chrome.d.ts" />
 /// <reference path="../../references/jquery.d.ts" />
+var config;
+chrome.storage.sync.get('config', function(items) {
+    config = items['config'];
+    if (config.instantsearch.value) {
+        document.getElementById('search').onpaste = search;
+        document.getElementById('search').oninput = search;
+    }
+    document.getElementById('search').onkeypress = search;
+})
+
+function search(e) {
+    if (config.instantsearch.value) {
+        setTimeout(function(e) {
+            if (e.which || e.keyCode) {
+                if (!(e.which === 8 || e.keyCode === 8 || e.which === 46 || e.keyCode === 46)) {
+                    return false;
+                }
+            }
+            graphWebsites(true, 200, document.getElementById('search').value);
+            if (!document.getElementById('x')) {
+                var val = document.getElementById('search').value;
+                document.getElementById('searchdiv').innerHTML += '<span id="x" title="Clear Search"></span>';
+                document.getElementById('search').onkeypress = search;
+                document.getElementById('search').onpaste = search;
+                document.getElementById('search').oninput = search;
+                document.getElementById('search').value = val;
+                document.getElementById('search').focus();
+                document.getElementById('x').onclick = clearsearch;
+            }
+            if (!document.getElementById('search').value) {
+                document.getElementById('x').remove();
+            }
+        }, 50, e);
+    } else {
+        if (e.which == 13 || e.keyCode == 13) {
+            graphWebsites(true, 200, document.getElementById('search').value);
+            if (!document.getElementById('x')) {
+                var val = document.getElementById('search').value;
+                document.getElementById('searchdiv').innerHTML += '<span id="x" title="Clear Search"></span>';
+                document.getElementById('search').onkeypress = search;
+                document.getElementById('search').value = val;
+                document.getElementById('search').focus();
+                document.getElementById('x').onclick = clearsearch;
+            }
+            if (!document.getElementById('search').value) {
+                document.getElementById('x').remove();
+            }
+            return false;
+        }
+    }
+    return true;
+
+}
+
+function clearsearch() {
+    document.getElementById('search').value = '';
+    graphWebsites(true, 200, '');
+    document.getElementById('search').onkeydown = search;
+    return false;
+}
 
 function getTimeString(time) {
     var text = '';
@@ -42,11 +102,12 @@ function getTimeString(time) {
 function getTextSize(text) {
     var test = document.getElementById("SizeTest");
     test.innerText = text;
-    return { 'height': (test.clientHeight + 150), 'width': (test.clientWidth + 150) };
+    return { 'height': (test.clientHeight + 125), 'width': (test.clientWidth + 125) };
 }
 
-function graphWebsites(isanimated, animatetime) {
+function graphWebsites(isanimated, animatetime, searchvalue) {
     var chart = document.getElementById('chart1');
+    chart.innerHTML = '';
     chart.innerHTML = '<div class="container"></div>';
     if (isanimated) {
         var animationscript = '';
@@ -60,6 +121,11 @@ function graphWebsites(isanimated, animatetime) {
         var keysSorted = Object.keys(items['websitetimes']).sort(function(a, b) { return items['websitetimes'][b] - items['websitetimes'][a]; });
         var max = items['websitetimes'][keysSorted[0]];
         for (var i = 0; i < keysSorted.length; i++) {
+            if (searchvalue) {
+                if (keysSorted[i].indexOf(searchvalue) === -1) {
+                    continue;
+                }
+            }
             var barwidth = items['websitetimes'][keysSorted[i]] / max;
             var element = '<div class="container"><div class="label">';
             if (isanimated) {

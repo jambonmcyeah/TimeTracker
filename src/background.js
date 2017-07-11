@@ -6,27 +6,33 @@ var config = {
         'description': 'When enabled full website address is used (e.g. mail.google.com instead of google.com)',
         'type': 'bool',
         'value': false,
-        'save': "if (<val>) {\
+        'save': "if (<val> != <initval>) {\
                     if(confirm('You sure you want to save? This will remove your time history!'))\
                     {\
                         chrome.storage.sync.remove('websitetimes');\
-                        true;\
+                        <val>;\
                     }\
                     else{\
-                        false;\
+                        !<val>;\
                     }\
                 } else {\
-                    false;\
+                    <val>;\
                 }"
     },
     'instantsearch': {
         'name': 'Enable Instant Search',
         'description': 'Enable instant search in the graph page',
         'type': 'bool',
-        'value': true,
+        'value': false,
         'save': "<val>;"
     }
 };
+chrome.storage.sync.get('config', function(items) {
+    if (!items['config']) {
+        items['config'] = config;
+        chrome.storage.sync.set(items);
+    }
+});
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (message.type) {
         case 'setTime':

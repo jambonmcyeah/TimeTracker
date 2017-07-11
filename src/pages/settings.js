@@ -20,10 +20,14 @@ function saveconfig() {
     var tmp = document.getElementsByClassName('settinginput');
     for (var i = 0; i < tmp.length; i++) {
         if (tmp[i].type == 'checkbox') {
-            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace('<val>', tmp[i].checked.toString()));
+            var tmpsave = config[tmp[i].id].save
+            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace(new RegExp('<val>', 'g'), tmp[i].checked.toString()).replace(new RegExp('<initval>', 'g'), config[tmp[i].id].value.toString()));
+            config[tmp[i].id].save = tmpsave;
             tmp[i].checked = config[tmp[i].id].value;
         } else if (tmp[i].type == 'textbox') {
-            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace('<val>', tmp[i].value));
+            var tmpsave = config[tmp[i].id].save
+            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace(new RegExp('<val>', 'g'), tmp[i].checked).replace(new RegExp('<initval>', 'g'), config[tmp[i].id].value));
+            config[tmp[i].id].save = tmpsave;
             tmp[i].value = config[tmp[i].id].value;
         }
     }
@@ -40,8 +44,8 @@ function loadPage() {
 
     for (var i = 0; i < sortedkeys.length; i++) {
         sel.innerHTML += separator;
-        sel.innerHTML += '<div class="settingname">' + config[sortedkeys[i]].name + '</div>';
-        var temp = '<input class="settinginput" id="' + sortedkeys[i] + '" ';
+        sel.innerHTML += '<div class="settingname" title="' + config[sortedkeys[i]].description + '">' + config[sortedkeys[i]].name + '</div>';
+        var temp = '<input class="settinginput" id="' + sortedkeys[i] + '" title="' + config[sortedkeys[i]].description + '" ';
         switch (config[sortedkeys[i]].type) {
             case 'bool':
                 temp += 'type="checkbox" ' + (config[sortedkeys[i]].value ? 'checked="checked"' : '') + ' />';
@@ -69,4 +73,5 @@ chrome.storage.sync.get('config', function(items) {
     } else {
         loadPage();
     }
+
 });
