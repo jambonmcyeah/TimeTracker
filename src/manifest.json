@@ -2,6 +2,7 @@
     "manifest_version": 2,
 
     "name": "TimeTracker",
+    "options_page": "pages/settings.html",
     "description": "This extension keeps track of your time on every website",
     "version": "1.0",
 

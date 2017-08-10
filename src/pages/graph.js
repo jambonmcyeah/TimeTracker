@@ -57,6 +57,7 @@ function search(e) {
 function clearsearch() {
     document.getElementById('search').value = '';
     graphWebsites(true, 200, '');
+    document.getElementById('x').remove();
     document.getElementById('search').onkeydown = search;
     return false;
 }
