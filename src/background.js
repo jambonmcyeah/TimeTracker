@@ -25,6 +25,13 @@ var config = {
         'type': 'bool',
         'value': false,
         'save': "<val>;"
+    },
+    'animated': {
+        'name': 'Enable Animations',
+        'description': 'Enable Animations',
+        'type': 'bool',
+        'value': true,
+        'save': "<val>;"
     }
 };
 chrome.storage.sync.get('config', function(items) {

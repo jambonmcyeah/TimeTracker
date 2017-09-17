@@ -8,6 +8,7 @@ chrome.storage.sync.get('config', function(items) {
         document.getElementById('search').oninput = search;
     }
     document.getElementById('search').onkeypress = search;
+    graphWebsites(config.animated.value, 1500);
 })
 
 function search(e) {
@@ -18,7 +19,7 @@ function search(e) {
                     return false;
                 }
             }
-            graphWebsites(true, 200, document.getElementById('search').value);
+            graphWebsites(config.animated.value, 200, document.getElementById('search').value);
             if (!document.getElementById('x')) {
                 var val = document.getElementById('search').value;
                 document.getElementById('searchdiv').innerHTML += '<span id="x" title="Clear Search"></span>';
@@ -35,7 +36,7 @@ function search(e) {
         }, 50, e);
     } else {
         if (e.which == 13 || e.keyCode == 13) {
-            graphWebsites(true, 200, document.getElementById('search').value);
+            graphWebsites(config.animated.value, 200, document.getElementById('search').value);
             if (!document.getElementById('x')) {
                 var val = document.getElementById('search').value;
                 document.getElementById('searchdiv').innerHTML += '<span id="x" title="Clear Search"></span>';
@@ -56,7 +57,7 @@ function search(e) {
 
 function clearsearch() {
     document.getElementById('search').value = '';
-    graphWebsites(true, 200, '');
+    graphWebsites(config.animated.value, 200, '');
     document.getElementById('x').remove();
     document.getElementById('search').onkeydown = search;
     return false;
@@ -164,4 +165,3 @@ function graphWebsites(isanimated, animatetime, searchvalue) {
         }
     });
 }
-graphWebsites(true, 1500);

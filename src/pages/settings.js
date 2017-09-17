@@ -51,9 +51,9 @@ function loadPage() {
                 temp += 'type="checkbox" ' + (config[sortedkeys[i]].value ? 'checked="checked"' : '') + ' />';
                 break;
             case 'string':
-                temp += 'type="textbox" />'
+                temp += 'type="textbox" value="' + config[sortedkeys[i]].value + '" />';
             case 'number':
-                temp += 'type="textbox" />'
+                temp += 'type="textbox" value="' + config[sortedkeys[i]].value.toString() + '" />';
                 break;
             default:
                 break;
@@ -65,13 +65,21 @@ function loadPage() {
 
 chrome.storage.sync.get('config', function(items) {
     config = items['config']
-    if (!config) {
-        chrome.runtime.sendMessage({ 'type': 'getVar', 'content': 'defaultConfig' }, function(response) {
-            config = response;
+    chrome.runtime.sendMessage({ 'type': 'getVar', 'content': 'defaultConfig' }, function(response) {
+        if (!config) {
+                config = response;
+                loadPage();
+        
+        } else {
+            for(var setting in response)
+            {
+                if(config[setting] == undefined)
+                {
+                    config[setting] = response[setting];
+                }
+            }
             loadPage();
-        });
-    } else {
-        loadPage();
-    }
+        }
+    });
 
 });
