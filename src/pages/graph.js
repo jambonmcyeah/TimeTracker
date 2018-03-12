@@ -119,6 +119,7 @@ function graphWebsites(isanimated, animatetime, searchvalue) {
         if (!items['websitetimes']) {
             $('#cover0').remove();
             document.getElementById('chart1').innerText = 'No Data Found...'
+            return -1;
         }
         var keysSorted = Object.keys(items['websitetimes']).sort(function(a, b) { return items['websitetimes'][b] - items['websitetimes'][a]; });
         var max = items['websitetimes'][keysSorted[0]];
@@ -130,12 +131,12 @@ function graphWebsites(isanimated, animatetime, searchvalue) {
             }
             var barwidth = items['websitetimes'][keysSorted[i]] / max;
             var element = '<div class="container"><div class="label">';
+            element += keysSorted[i] + '</div>';
+            element += '<div class="barcontainer">'
             if (isanimated) {
-                element += keysSorted[i] + '</div>';
-                element += '<div class="barcontainer"><div id="bar' + i.toString() + '" ' + 'class="bar">';
+                element += '<div id="bar' + i.toString() + '" ' + 'class="bar">'
             } else {
-                element += keysSorted[i] + '</div>';
-                element += '<div class="barcontainer"><div class="bar" style="width:';
+                element += '<div class="bar" style="width:';
                 element += (barwidth * 100).toString() + '%;' + '">';
             }
             var timestr = getTimeString(items['websitetimes'][keysSorted[i]]);
@@ -163,5 +164,6 @@ function graphWebsites(isanimated, animatetime, searchvalue) {
             document.getElementById('cover0').remove();
             document.getElementById("loadingstyle").remove();
         }
+        return 0;
     });
 }

@@ -1,6 +1,13 @@
 ﻿/// <reference path="../../references/chrome.d.ts" />
 /// <reference path="../../references/jquery.d.ts" />
 
+var config;
+
+chrome.storage.sync.get('config', function(items) {
+    config = items['config'];
+    graphWebsites(config.animated.value, 1000);
+});
+
 function getTimeString(time) {
     var text = '';
     var days = Math.floor(time / 86400);
@@ -114,7 +121,6 @@ function graphWebsites(isanimated, animatetime) {
         }
     });
 }
-graphWebsites(true, 1000);
 document.getElementById('link1').onclick = function() {
     chrome.tabs.create({ 'url': '/pages/graph.html' })
 }

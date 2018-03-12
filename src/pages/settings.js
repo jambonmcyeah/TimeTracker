@@ -26,12 +26,12 @@ function saveconfig() {
             tmp[i].checked = config[tmp[i].id].value;
         } else if (tmp[i].type == 'textbox') {
             var tmpsave = config[tmp[i].id].save
-            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace(new RegExp('<val>', 'g'), tmp[i].checked).replace(new RegExp('<initval>', 'g'), config[tmp[i].id].value));
+            config[tmp[i].id].value = eval(config[tmp[i].id].save.replace(new RegExp('<val>', 'g'), tmp[i].value).replace(new RegExp('<initval>', 'g'), config[tmp[i].id].value));
             config[tmp[i].id].save = tmpsave;
             tmp[i].value = config[tmp[i].id].value;
         }
     }
-    chrome.storage.sync.set({ 'config': config });
+    chrome.storage.sync.set({ 'config': config },function(){alert("Settings Saved");});
 }
 
 document.getElementById('retimebtn').onclick = cleartime;
