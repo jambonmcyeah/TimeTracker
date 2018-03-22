@@ -1,6 +1,7 @@
 ﻿/// <reference path="../references/chrome.d.ts" />
 /// <reference path="../references/jquery.d.ts" />
 
+var initialized=false
 var current = false;
 var totaltime;
 
@@ -100,6 +101,7 @@ function initialize() {
                     document.getElementById('div0').innerText = 'Your total time on';
                 });
             }
+            initialized = true;
         });
     });
 }
@@ -107,41 +109,47 @@ function initialize() {
 initialize();
 
 document.getElementById('totalbtn').onclick = function() {
-    current = false;
-    document.getElementById('div0').innerText = 'Your total time on';
-    document.getElementById('totalbtn').style.backgroundColor = '#cccccc';
+    if(initialized)
+    {
+        current = false;
+        document.getElementById('div0').innerText = 'Your total time on';
+        document.getElementById('totalbtn').style.backgroundColor = '#cccccc';
 
-    document.getElementById('currentbtn').style.backgroundColor = '#FFFFFF';
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: "getTime" }, function(timetracker) {
-            document.getElementById('div1').innerText = timetracker[0];
-            chrome.storage.sync.get('websitetimes', function(items) {
-                if (!items['websitetimes']) {
-                    items['websitetimes'] = new Object();
-                }
-                if (!items['websitetimes'][timetracker[0]]) {
-                    items['websitetimes'][timetracker[0]] = 0;
-                }
-                totaltime = items['websitetimes'][timetracker[0]] + timetracker[1];
+        document.getElementById('currentbtn').style.backgroundColor = '#FFFFFF';
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { type: "getTime" }, function(timetracker) {
+                document.getElementById('div1').innerText = timetracker[0];
+                chrome.storage.sync.get('websitetimes', function(items) {
+                        if (!items['websitetimes']) {
+                            items['websitetimes'] = new Object();
+                        }
+                        if (!items['websitetimes'][timetracker[0]]) {
+                            items['websitetimes'][timetracker[0]] = 0;
+                        }
+                        totaltime = items['websitetimes'][timetracker[0]] + timetracker[1];
+                        setTime(document.getElementById('div2'), totaltime);
+                        autosize();
+                });
+            });
+        });
+    }
+};
+
+document.getElementById('currentbtn').onclick = function() {
+    if(initialized)
+    {
+        current = true;
+        document.getElementById('div0').innerText = 'Your current time on';
+        document.getElementById('currentbtn').style.backgroundColor = '#cccccc';
+
+        document.getElementById('totalbtn').style.backgroundColor = '#FFFFFF';
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { type: "getTime" }, function(timetracker) {
+                document.getElementById('div1').innerText = timetracker[0];
+                totaltime = timetracker[1];
                 setTime(document.getElementById('div2'), totaltime);
                 autosize();
             });
         });
-    });
-};
-
-document.getElementById('currentbtn').onclick = function() {
-    current = true;
-    document.getElementById('div0').innerText = 'Your current time on';
-    document.getElementById('currentbtn').style.backgroundColor = '#cccccc';
-
-    document.getElementById('totalbtn').style.backgroundColor = '#FFFFFF';
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: "getTime" }, function(timetracker) {
-            document.getElementById('div1').innerText = timetracker[0];
-            totaltime = timetracker[1];
-            setTime(document.getElementById('div2'), totaltime);
-            autosize();
-        });
-    });
+    }
 };
